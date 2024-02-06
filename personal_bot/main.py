@@ -306,10 +306,13 @@ book = AddressBook(data, phones)
    # Виведення всіх записів з книги за пошуковим словом або всіх записів через Enter
 print('Перегляд усіх записів за пошуковим словом')
 nme = input()
-for name, record in book.data.items():
-    if nme in name or nme in record:
-        console.print('ЗНАЙДЕНО ЗАПИС: ', style='bold yellow')
-        print(name, record)
+try:
+    for name, record in book.data.items():
+        if nme in name or nme in record:
+            console.print('ЗНАЙДЕНО ЗАПИС: ', style='bold yellow')
+            print(name, record)
+except EOFError:
+    pass
 
 # ПЕРЕГЛЯД УСІХ ДНІВ НАРОДЖЕННЯ з вказівкою на кількість днів до святкування
 
