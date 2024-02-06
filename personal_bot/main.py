@@ -306,14 +306,14 @@ book = AddressBook(data, phones)
    # Виведення всіх записів з книги за пошуковим словом або всіх записів через Enter
 print('Перегляд усіх записів за пошуковим словом')
 
-try:
-    nme = input()
-    for name, record in book.data.items():
-        if nme in name or nme in record:
-            console.print('ЗНАЙДЕНО ЗАПИС: ', style='bold yellow')
-            print(name, record)
-except EOFError:
-    pass
+#nme = ''
+nme = input()
+for name, record in book.data.items():
+    if nme in name or nme in record:
+        console.print('ЗНАЙДЕНО ЗАПИС: ', style='bold yellow')
+        print(name, record)
+    #if nme == '':
+     #   print("ПОШУКОВЕ СЛОВО НЕ ЗАДАНО!")
 
 # ПЕРЕГЛЯД УСІХ ДНІВ НАРОДЖЕННЯ з вказівкою на кількість днів до святкування
 
@@ -426,20 +426,15 @@ while True:
         if inp == '1':
             
             print("Введіть телефон, який треба видалити: ")
-            phone = input()
-            print(type(phone))
+            phone = input()            
             phonee = Phone(phone)
             
             #print(phone)
             #Phone.validate(phone)
-            
-           
-            fg = f'sssssffffff {phone}'
-            print(fg)
+                       
             console.print('Телефон [blue]видалено[/blue]')
             file_name = 'data.json'   
-            print(data)     
-            input()
+            
             with open(file_name, "w") as fh:
                 json.dump(data, fh) 
             continue
