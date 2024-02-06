@@ -3,10 +3,10 @@
 FROM python:3.11-slim
 
 # Встановимо змінну середовища
-ENV APP_HOME /app
+ENV PERSONAL_BOT /personal_bot
 
 # Встановимо робочу директорію всередині контейнера
-WORKDIR $APP_HOME
+WORKDIR $PERSONAL_BOT
 
 # Скопіюємо інші файли в робочу директорію контейнера
 COPY . .
