@@ -307,13 +307,22 @@ book = AddressBook(data, phones)
 print('Перегляд усіх записів за пошуковим словом')
 
 #nme = ''
-nme = input()
-for name, record in book.data.items():
-    if nme in name or nme in record:
-        console.print('ЗНАЙДЕНО ЗАПИС: ', style='bold yellow')
-        print(name, record)
-    #if nme == '':
-     #   print("ПОШУКОВЕ СЛОВО НЕ ЗАДАНО!")
+o = 1
+while True:
+    nme = input()
+    if nme == '':        
+        if o == 2:
+            break
+        print('Введіть пошукове слово та натисніть Enter або просто натисніть ENTER для виходу')
+        o = o + 1
+        continue
+    for name, record in book.data.items():
+            
+        if nme in name or nme in record:
+            console.print('ЗНАЙДЕНО ЗАПИС: ', style='bold yellow')
+            print(name, record)
+        #if nme == '':
+        #   print("ПОШУКОВЕ СЛОВО НЕ ЗАДАНО!")
 
 # ПЕРЕГЛЯД УСІХ ДНІВ НАРОДЖЕННЯ з вказівкою на кількість днів до святкування
 
@@ -350,7 +359,8 @@ while True:
     
     flag_new = 1
     print(' ')
-    print('Заповнити книгу контактів? - Enter\nВивести повний запис за іменем? - f + Enter\nПереглянути книгу? - r + Enter\nВидалити запис? - d + Enter\nРедагувати запис? - ed + Enter\nВийти? - q + Enter')
+    print('Заповнити книгу контактів? - Enter\nВивести повний запис за іменем? - f + Enter\nПереглянути книгу? - r + Enter\nВидалити запис? - d + Enter')
+          #\nРедагувати запис? - ed + Enter\nВийти? - q + Enter')
     inp = input()
     if inp == 'q':        
         os.abort()
@@ -418,39 +428,39 @@ while True:
     
     # РЕДАГУВАННЯ ЗАПИСУ
     
-    if inp == 'ed':
-        console.print('ЯК БУДЕМО РЕДАГУВАТИ? ', style='bold yellow')   
-        console.print("[blue]1.[/blue] Видалити телефон? - натисни номер та Enter\n[green]2.[/green] Додати телефон? - натисни номер та Enter\n[yellow]3.[/yellow] Видалити email? - натисни номер та Enter\n[red]4.[/red] Додати email? - натисни номер та Enter\n[blue]5.[/blue] Редагувати адресу? - натисни номер та Enter\n[green]6.[/green] Змінити день народження? - натисни номер та Enter\n[reverse]7.[/reverse] Вийти з режиму редагування? - натисни номер та Enter")
-        inp = input()     
+    # if inp == 'ed':
+    #     console.print('ЯК БУДЕМО РЕДАГУВАТИ? ', style='bold yellow')   
+    #     console.print("[blue]1.[/blue] Видалити телефон? - натисни номер та Enter\n[green]2.[/green] Додати телефон? - натисни номер та Enter\n[yellow]3.[/yellow] Видалити email? - натисни номер та Enter\n[red]4.[/red] Додати email? - натисни номер та Enter\n[blue]5.[/blue] Редагувати адресу? - натисни номер та Enter\n[green]6.[/green] Змінити день народження? - натисни номер та Enter\n[reverse]7.[/reverse] Вийти з режиму редагування? - натисни номер та Enter")
+    #     inp = input()     
         
-        if inp == '1':
+    #     if inp == '1':
             
-            print("Введіть телефон, який треба видалити: ")
-            phone = input()            
-            phonee = Phone(phone)
+    #         print("Введіть телефон, який треба видалити: ")
+    #         phone = input()            
+    #         phonee = Phone(phone)
             
-            #print(phone)
-            #Phone.validate(phone)
+    #         #print(phone)
+    #         #Phone.validate(phone)
                        
-            console.print('Телефон [blue]видалено[/blue]')
-            file_name = 'data.json'   
+    #         console.print('Телефон [blue]видалено[/blue]')
+    #         file_name = 'data.json'   
             
-            with open(file_name, "w") as fh:
-                json.dump(data, fh) 
-            continue
+    #         with open(file_name, "w") as fh:
+    #             json.dump(data, fh) 
+    #         continue
         
-        if inp == '2':
-            continue
-        if inp == '3':
-            continue
-        if inp == '4':
-            continue
-        if inp == '5':
-            continue
-        if inp == '6':
-            continue
-        if inp == '7':
-            continue
+    #     if inp == '2':
+    #         continue
+    #     if inp == '3':
+    #         continue
+    #     if inp == '4':
+    #         continue
+    #     if inp == '5':
+    #         continue
+    #     if inp == '6':
+    #         continue
+    #     if inp == '7':
+    #         continue
         
 # Основний блок заповнення Книги контактів
     new_name = ''
