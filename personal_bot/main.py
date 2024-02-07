@@ -302,12 +302,14 @@ while lich < 10:
     print('')
 
 book = AddressBook(data, phones)
+kilkist = len(book.data)
 
    # Виведення всіх записів з книги за пошуковим словом або всіх записів через Enter
 print('Перегляд усіх записів за пошуковим словом')
-
+  
 #nme = ''
 o = 1
+lich__ = 0
 while True:
     nme = input()
     if nme == '':        
@@ -319,8 +321,13 @@ while True:
     for name, record in book.data.items():
             
         if nme in name or nme in record:
+            lich__ += 1
             console.print('ЗНАЙДЕНО ЗАПИС: ', style='bold yellow')
             print(name, record)
+        if lich__ == 0:
+            console.print('ЗАПИС НЕ ЗНАЙДЕНО! ', style='bold red')   
+    break
+            
         #if nme == '':
         #   print("ПОШУКОВЕ СЛОВО НЕ ЗАДАНО!")
 
@@ -355,12 +362,14 @@ for key_birth, val_birth in unpacked.items():
             console.print(f'До дня народження [red]{name_birth}[/red] залишилося днів - {dniv}', style='bold green')
      
 # РОБОТА з КНИГОЮ КОНТАКТІВ
+inp = ''
+nme = ''
 while True:
     
     flag_new = 1
     print(' ')
-    print('Заповнити книгу контактів? - Enter\nВивести повний запис за іменем? - f + Enter\nПереглянути книгу? - r + Enter\nВидалити запис? - d + Enter')
-          #\nРедагувати запис? - ed + Enter\nВийти? - q + Enter')
+    print('Заповнити книгу контактів? - Enter\nВивести повний запис за іменем? - f + Enter\nПереглянути книгу? - r + Enter\nВидалити запис? - d + Enter\nВийти? - q + Enter')
+          #\nРедагувати запис? - ed + Enter')
     inp = input()
     if inp == 'q':        
         os.abort()
@@ -374,14 +383,18 @@ while True:
         print("Введіть ім'я для виведення повного запису: ")
         nme = input()
         lich = 0   
+        lich_ = 0
         
         if nme == '':
             console.print('Такого імені нема!', style='bold red')
             continue
         for name, record  in book.data.items():  
             count_nme = name.count(nme) 
+            lich_ += 1
                          
-            if count_nme != 1:
+            if count_nme != 1 and lich_ != kilkist:
+                continue
+            if count_nme != 1 and lich_ == kilkist:
                 console.print('Такого імені нема!', style='bold red')                
                 break
                                             
@@ -471,8 +484,18 @@ while True:
     new_email = ''
     new_adress = ' '
     
+    
+        
     print("Введіть ім'я та натисність Enter: ")
     new_name = input()
+    if new_name == '':
+        print("Ви забули ввести ім'я?")
+        new_name = input()
+        if new_name == '':
+            print("Не хочете вводити - q + Enter")
+            new_name = input()
+            if new_name == "q":
+                os.abort()
     
     new_record = Record(new_name)
     Name_ = new_record.name.value
