@@ -18,4 +18,4 @@ RUN pip install -r requirements.txt
 EXPOSE 3000
 
 # Запустимо наш застосунок всередині контейнера
-ENTRYPOINT ["python", "main.py"]
+ENTRYPOINT ["python", "setup.py"]
