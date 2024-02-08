@@ -201,7 +201,7 @@ class AddressBook(UserDict):
         self.data = data        
         self.phones = phones
         file_name = 'data.json'
-        with open(file_name, "r") as fh:        
+        with open(file_name, "r", encoding="utf-8") as fh:        
             unpacked = json.load(fh)    
             self.data = unpacked               
              
@@ -210,7 +210,7 @@ class AddressBook(UserDict):
         self.data.update({Name_: phones_, Name_+'_день народження': str(birth_), Name_+'_Email': emails_, Name_+'_Адреса': adress_}) 
         
         file_name = 'data.json'        
-        with open(file_name, "w") as fh:
+        with open(file_name, "w", encoding="utf-8") as fh:
             json.dump(self.data, fh)  
         
         if flag_new == 1:
@@ -248,7 +248,7 @@ class AddressBook(UserDict):
         console.print(a_)
         
         file_name = 'data.json'        
-        with open(file_name, "w") as fh:
+        with open(file_name, "w", encoding="utf-8") as fh:
             json.dump(self.data, fh)          
                 
     def iterator(self, item_number):
@@ -354,7 +354,7 @@ rik = day_now.year
 db = "_день народження"
 
 file_name = 'data.json'
-with open(file_name, "r") as fh:        
+with open(file_name, "r", encoding="utf-8") as fh:        
     unpacked = json.load(fh)    
 
 for key_birth, val_birth in unpacked.items():
