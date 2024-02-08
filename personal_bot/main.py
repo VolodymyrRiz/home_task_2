@@ -310,14 +310,27 @@ print('Перегляд усіх записів за пошуковим слов
 #nme = ''
 o = 1
 lich__ = 0
-while True:
+# while True:
+#     nme = input()
+#     if nme == '':        
+#         if o == 2:
+#             break
+#         print('Введіть пошукове слово та натисніть Enter або просто натисніть ENTER для виходу')
+#         o = o + 1
+#         continue
+#     for name, record in book.data.items():
+            
+#         if nme in name or nme in record:
+#             lich__ += 1
+#             console.print('ЗНАЙДЕНО ЗАПИС: ', style='bold yellow')
+#             print(name, record)
+#         if lich__ == 0:
+#             console.print('ЗАПИС НЕ ЗНАЙДЕНО! ', style='bold red')   
+#     break
+            
+            
+try:
     nme = input()
-    if nme == '':        
-        if o == 2:
-            break
-        print('Введіть пошукове слово та натисніть Enter або просто натисніть ENTER для виходу')
-        o = o + 1
-        continue
     for name, record in book.data.items():
             
         if nme in name or nme in record:
@@ -326,8 +339,8 @@ while True:
             print(name, record)
         if lich__ == 0:
             console.print('ЗАПИС НЕ ЗНАЙДЕНО! ', style='bold red')   
-    break
-            
+except EOFError as e: 
+    pass
         #if nme == '':
         #   print("ПОШУКОВЕ СЛОВО НЕ ЗАДАНО!")
 
@@ -370,9 +383,12 @@ while True:
     print(' ')
     print('Заповнити книгу контактів? - Enter\nВивести повний запис за іменем? - f + Enter\nПереглянути книгу? - r + Enter\nВидалити запис? - d + Enter\nВийти? - q + Enter')
           #\nРедагувати запис? - ed + Enter')
-    inp = input()
-    if inp == 'q':        
-        os.abort()
+    try:
+        inp = input()
+        if inp == 'q':        
+            os.abort()
+    except EOFError as e:
+        pass
  
  # ВІДКРИТТЯ ПОВНОГО ЗАПИСУ ЗА ІМЕНЕМ       
     if inp == 'f':
@@ -487,31 +503,38 @@ while True:
     
         
     print("Введіть ім'я та натисність Enter: ")
-    new_name = input()
-    if new_name == '':
-        print("Ви забули ввести ім'я?")
+    try:
         new_name = input()
         if new_name == '':
-            print("Не хочете вводити - q + Enter")
+            print("Ви забули ввести ім'я?")
             new_name = input()
-            if new_name == "q":
+        if new_name == '':
+            print("Не хочете вводити - натисніть Enter")
+            new_name = input()
+            if new_name == '':
                 os.abort()
+    except EOFError as e:
+        pass
     
     new_record = Record(new_name)
     Name_ = new_record.name.value
         
     print("Введіть номер телефона без пробілів, символів, має бути 10 цифр, натисність Enter: ")
-    new_phone = input()
-
-    phones_ = new_record.add_phone(new_phone)
-    
+    try:
+        new_phone = input()
+        phones_ = new_record.add_phone(new_phone)
+    except EOFError as e:
+        pass
     print("Введіть дату народження.")
     int_ = 0
     while int_ != 1000:        
         int_ += 1
         print("Рік? (чотири цифри + Enter): ")
         try:
-            birth_yer = int(input())
+            try:
+                birth_yer = int(input())
+            except EOFError as e:
+                pass
         except ValueError:
             continue
         break
@@ -521,7 +544,10 @@ while True:
         int_ += 1
         print("Місяць? (дві цифри + Enter): ")
         try:
-            birth_mont = int(input())
+            try:
+                birth_mont = int(input())
+            except EOFError as e:
+                pass
         except ValueError:
             continue
         break
@@ -531,7 +557,10 @@ while True:
         int_ += 1
         print("День? (дві цифри + Enter): ")
         try:            
-            birth_day = int(input())
+            try:
+                birth_day = int(input())
+            except EOFError as e:
+                pass
         except ValueError:
             continue
         break 
@@ -539,11 +568,16 @@ while True:
     birth_ = new_record.days_to_birthday(birth_yer, birth_mont, birth_day)
     
     print("Введіть електронну адресу латинськими літерами у такому форматі: name@name.name, натисність Enter: ")
-    new_email = input()      
-    emails_ = new_record.add_email(new_email)    
-    
+    try:
+        new_email = input()      
+        emails_ = new_record.add_email(new_email)    
+    except EOFError as e:
+        pass
     print("Введіть адресу в довільному форматі та натисність Enter: ")
-    new_adress = input()
-    adress_ = new_record.add_adress(new_adress)  
+    try:
+        new_adress = input()
+        adress_ = new_record.add_adress(new_adress) 
+    except EOFError as e: 
+        adress_ = new_record.add_adress(new_adress) 
     
     book.add_record(new_record)
