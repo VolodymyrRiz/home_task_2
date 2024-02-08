@@ -293,7 +293,7 @@ lich = 0
 while lich < 20:
     lich += 1
     print('')
-with open("README.md") as readme:
+with open("README.md", encoding="utf-8") as readme:
     markdown = Markdown(readme.read())
 console.print(markdown, style='bold red')
 lich = 0
