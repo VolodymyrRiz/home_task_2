@@ -11,6 +11,15 @@ from rich.markdown import Markdown
 from rich.table import Table
 console = Console()
 
+
+
+
+class ConsolOutput:
+    pass
+
+class TableOutput:
+    pass
+
 class Field:
     
     def __init__(self, value):
