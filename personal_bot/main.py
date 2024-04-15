@@ -9,17 +9,51 @@ import json
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.table import Table
+from abc import ABC, abstractmethod
 console = Console()
 
+class Output(ABC):
+
+    @abstractmethod
+    def consol_output(self):
+        pass
+
+    @abstractmethod
+    def table_output(self):
+        pass
 
 
+class ConsolOutput(Output):
 
-class ConsolOutput:
-    pass
+    def consol_output(self):
+        return "This is a console output."
 
-class TableOutput:
-    pass
+    # table_output is not applicable for ConsolOutput, so it should not be abstract
+    def table_output(self):
+        # You can either raise a NotImplementedError or provide a default implementation
+        raise NotImplementedError("table_output is not implemented for ConsolOutput")
 
+class TableOutput(Output):
+
+    # consol_output is not applicable for TableOutput, so it should not be abstract
+    def consol_output(self):
+        # You can either raise a NotImplementedError or provide a default implementation
+        raise NotImplementedError("consol_output is not implemented for TableOutput")
+
+    def table_output(self):
+        return "This is a table output."
+
+dat = input("Enter the type of output (consol or table): ")
+
+# Instantiate the classes
+if dat == "c": 
+    consol_view = ConsolOutput()
+    print(consol_view.consol_output())
+if dat == "t": 
+    table_view = TableOutput()
+    print(table_view.table_output())
+
+    
 class Field:
     
     def __init__(self, value):
@@ -314,7 +348,7 @@ book = AddressBook(data, phones)
 kilkist = len(book.data)
 
    # Виведення всіх записів з книги за пошуковим словом або всіх записів через Enter
-print('Перегляд усіх записів за пошуковим словом')
+print('Перегляд усіх записів')
   
 #nme = ''
 o = 1
@@ -339,7 +373,7 @@ lich__ = 0
             
             
 try:
-    nme = input()
+    nme = ''
     for name, record in book.data.items():
             
         if nme in name or nme in record:
@@ -389,9 +423,25 @@ nme = ''
 while True:
     
     flag_new = 1
-    print(' ')
-    print('Заповнити книгу контактів? - Enter\nВивести повний запис за іменем? - f + Enter\nПереглянути книгу? - r + Enter\nВидалити запис? - d + Enter\nВийти? - q + Enter')
+    if dat == 'c':
+        print(' ')
+        print('Заповнити книгу контактів? - Enter\nВивести повний запис за іменем? - f + Enter\nПереглянути книгу? - r + Enter\nВидалити запис? - d + Enter\nВийти? - q + Enter')
           #\nРедагувати запис? - ed + Enter')
+          
+    if dat == 't':    
+        table = Table(show_header=True, header_style="bold magenta")
+        table.add_column("Заповнити книгу контактів", style="dim", width=25)
+        table.add_column("Вивести повний запис за іменем", style="dim", width=25)
+        table.add_column("Переглянути книгу", style="dim", width=25)
+        table.add_column("Видалити запис", style="dim", width=25)
+        table.add_column("Вийти", style="dim", width=25)                 
+       
+        console.print(table)           
+    
+    
+    
+    
+    
     try:
         inp = input()
         if inp == 'q':        
