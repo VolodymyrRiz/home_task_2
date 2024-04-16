@@ -1,26 +1,69 @@
-import tkinter as tk
+import curses
 
-def on_click(event):
-    # Отримуємо координати клітинки, на яку натиснули
-    row = event.widget.rowcget(event.widget.index("@%d,%d" % (event.x, event.y)))
-    col = event.widget.columncget(event.widget.index("@%d,%d" % (event.x, event.y)))
-    print("Ви обрали клітинку: ({}, {})".format(row, col))
+def main(stdscr):
+    # Clear screen
+    stdscr.clear()
+    stdscr.refresh()
 
-# Створюємо головне вікно
-root = tk.Tk()
+    # Get screen dimensions
+    screen_height, screen_width = stdscr.getmaxyx()
 
-# Створюємо таблицю
-table = tk.Canvas(root)
-table.pack(expand=True, fill='both')
+    # Calculate cell size based on screen width
+    cell_width = screen_width // 5
 
-# Додаємо клітинки до таблиці
-for i in range(10):
-    for j in range(10):
-        table.create_rectangle(i*50, j*50, (i+1)*50, (j+1)*50, fill="white")
-        table.create_text((i*50+50//2, j*50+50//2), text="({}, {})".format(i, j))
+    # Initialize cursor position
+    cursor_x = 0
 
-# Прив'язуємо подію кліку до функції on_click
-table.bind("<Button-1>", on_click)
+    # Draw the row of cells
+    commands = ["Заповнити книгу", "Пошук за іменем", "Переглянути книгу", "Видалити запис", "Вийти"]
+    for j, command in enumerate(commands):
+        stdscr.addstr(0, j * cell_width, f'{command}', curses.A_REVERSE if j == cursor_x else curses.A_NORMAL)
 
-# Запускаємо головне вікно
-root.mainloop()
+    # Move cursor to the first cell
+    stdscr.move(0, cursor_x * cell_width)
+
+    while True:
+        # Get user input
+        key = stdscr.getch()
+
+        # Handle arrow keys and Enter key
+        if key == curses.KEY_LEFT and cursor_x > 0:
+            cursor_x -= 1
+        elif key == curses.KEY_RIGHT and cursor_x < 4:
+            cursor_x += 1
+        elif key in (curses.KEY_ENTER, ord('\n'), ord('\r')):  # Handle Enter key to select cell
+            break
+        elif key == ord('q'):  # Handle 'q' to quit
+            cursor_x = -1
+            break
+
+        # Redraw the row with the new cursor position
+        for j, command in enumerate(commands):
+            stdscr.addstr(0, j * cell_width, f'{command}', curses.A_REVERSE if j == cursor_x else curses.A_NORMAL)
+
+        # Move the cursor to the new position
+        stdscr.move(0, cursor_x * cell_width)
+        stdscr.refresh()
+
+    # Print the selected cell or a message if 'q' was pressed
+    # if cursor_x != -1:
+    #     stdscr.addstr(2, 0, f"Ви обрали команду: {commands[cursor_x]}")
+    # else:
+    #     stdscr.addstr(2, 0, "Ви вийшли без вибору команди")
+    #stdscr.getch()  # Wait for a key press before ending
+    if cursor_x == 0:
+        print("Заповнити книгу")
+    if cursor_x == 1:
+        print("Пошук за іменем")
+    if cursor_x == 2:
+        print("Переглянути книгу")
+    if cursor_x == 3:
+        print("Видалити запис")
+    if cursor_x == 4:
+        print("Вийти")
+
+# Initialize curses and call main function
+curses.wrapper(main)
+
+
+
