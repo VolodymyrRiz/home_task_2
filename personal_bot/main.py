@@ -10,7 +10,74 @@ from rich.console import Console
 from rich.markdown import Markdown
 from rich.table import Table
 from abc import ABC, abstractmethod
+import curses
 console = Console()
+
+
+def main(stdscr):
+    # Clear screen
+    stdscr.clear()
+    stdscr.refresh()
+    inpu = ''
+
+    # Get screen dimensions
+    screen_height, screen_width = stdscr.getmaxyx()
+
+    # Calculate cell size based on screen width
+    cell_width = screen_width // 5
+
+    # Initialize cursor position
+    cursor_x = 0
+
+    # Draw the row of cells
+    commands = ["Заповнити книгу", "Пошук за іменем", "Переглянути книгу", "Видалити запис", "Вийти"]
+    for j, command in enumerate(commands):
+        stdscr.addstr(0, j * cell_width, f'{command}', curses.A_REVERSE if j == cursor_x else curses.A_NORMAL)
+
+    # Move cursor to the first cell
+    stdscr.move(0, cursor_x * cell_width)
+
+    while True:
+        # Get user input
+        key = stdscr.getch()
+
+        # Handle arrow keys and Enter key
+        if key == curses.KEY_LEFT and cursor_x > 0:
+            cursor_x -= 1
+        elif key == curses.KEY_RIGHT and cursor_x < 4:
+            cursor_x += 1
+        elif key in (curses.KEY_ENTER, ord('\n'), ord('\r')):  # Handle Enter key to select cell
+            break
+        elif key == ord('q'):  # Handle 'q' to quit
+            cursor_x = -1
+            break
+
+        # Redraw the row with the new cursor position
+        for j, command in enumerate(commands):
+            stdscr.addstr(0, j * cell_width, f'{command}', curses.A_REVERSE if j == cursor_x else curses.A_NORMAL)
+
+        # Move the cursor to the new position
+        stdscr.move(0, cursor_x * cell_width)
+        stdscr.refresh()
+  
+    if cursor_x == 0:
+        pass
+    if cursor_x == 1:
+        inpu = 'f'
+        
+    if cursor_x == 2:
+        inpu = 'r'
+        
+    if cursor_x == 3:
+        inpu = 'd'
+        
+    if cursor_x == 4:
+        inpu = 'q'
+    return inpu    
+
+
+
+
 
 class Output(ABC):
 
@@ -42,17 +109,23 @@ class TableOutput(Output):
 
     def table_output(self):
         return "This is a table output."
-
+    
+print('')
+print("Attention! You can choose the type of output: consol or table")
 dat = input("Enter the type of output (consol or table): ")
 
 # Instantiate the classes
-if dat == "c": 
+if dat == "c" or dat == "с": 
     consol_view = ConsolOutput()
     print(consol_view.consol_output())
-if dat == "t": 
+if dat == "t" or dat == 'е': 
     table_view = TableOutput()
     print(table_view.table_output())
-
+    # Initialize curses and call main function
+    inpu = curses.wrapper(main)
+   
+# print('Try again!')
+# os.abort()
     
 class Field:
     
@@ -418,39 +491,28 @@ for key_birth, val_birth in unpacked.items():
             console.print(f'До дня народження [red]{name_birth}[/red] залишилося днів - {dniv}', style='bold green')
      
 # РОБОТА з КНИГОЮ КОНТАКТІВ
-inp = ''
+# inpu = ''
 nme = ''
 while True:
     
     flag_new = 1
-    if dat == 'c':
+    if dat == 'c' or dat == 'с':
         print(' ')
         print('Заповнити книгу контактів? - Enter\nВивести повний запис за іменем? - f + Enter\nПереглянути книгу? - r + Enter\nВидалити запис? - d + Enter\nВийти? - q + Enter')
           #\nРедагувати запис? - ed + Enter')
           
-    if dat == 't':    
-        table = Table(show_header=True, header_style="bold magenta")
-        table.add_column("Заповнити книгу контактів", style="dim", width=25)
-        table.add_column("Вивести повний запис за іменем", style="dim", width=25)
-        table.add_column("Переглянути книгу", style="dim", width=25)
-        table.add_column("Видалити запис", style="dim", width=25)
-        table.add_column("Вийти", style="dim", width=25)                 
-       
-        console.print(table)           
-    
-    
-    
-    
-    
-    try:
-        inp = input()
-        if inp == 'q':        
-            os.abort()
-    except EOFError as e:
-        pass
+      
+    if dat == 'c' or dat == 'с':
+        try:
+            
+            inpu = input()
+            if inpu == 'q':        
+                os.abort()
+        except EOFError as e:
+            pass
  
  # ВІДКРИТТЯ ПОВНОГО ЗАПИСУ ЗА ІМЕНЕМ       
-    if inp == 'f':
+    if inpu == 'f':
         telef = ''
         maill = ''
         dat_birth = ''
@@ -501,14 +563,14 @@ while True:
         console.print(table)               
         continue        
         
-    if inp == 'r':
+    if inpu == 'r':
             
     # ПОСТОРІНКОВИЙ ПЕРЕГЛЯД КНИГИ КОНТАКТІВ
         book.iterator(10)  
         continue   
     
     # ВИДАЛЕННЯ ЗАПИСУ
-    if inp == 'd':
+    if inpu == 'd':
         print("Введіть ім'я для видалення запису")
         imia = input()
         book.delete(imia)
