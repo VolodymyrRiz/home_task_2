@@ -502,14 +502,14 @@ while True:
           #\nРедагувати запис? - ed + Enter')
           
       
-    if dat == 'c' or dat == 'с':
-        try:
-            
+    
+    try:
+        if dat == 'c' or dat == 'с':
             inpu = input()
-            if inpu == 'q':        
-                os.abort()
-        except EOFError as e:
-            pass
+        if inpu == 'q':        
+            os.abort()
+    except EOFError as e:
+        pass
  
  # ВІДКРИТТЯ ПОВНОГО ЗАПИСУ ЗА ІМЕНЕМ       
     if inpu == 'f':
@@ -567,6 +567,7 @@ while True:
             
     # ПОСТОРІНКОВИЙ ПЕРЕГЛЯД КНИГИ КОНТАКТІВ
         book.iterator(10)  
+        dat = 'c'
         continue   
     
     # ВИДАЛЕННЯ ЗАПИСУ
